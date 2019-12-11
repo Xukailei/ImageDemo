@@ -7,8 +7,6 @@ import com.image.model.MainModelImpl
 
 class MainPresentImpl(val mainView:MainActivity): MainPresent, MainPresent.NetListener {
 
-
-
     var mainModle : MainModel ?= null
     init {
         mainModle = MainModelImpl()

@@ -10,20 +10,23 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.sql.Time
 import java.util.concurrent.TimeUnit
-
-class RetrofitUtils{
+/**
+ * 创建Retrofit
+ */
+class RetrofitUtils {
     companion object {
-        fun creat(url:String):Retrofit{
-            loge("--------","-----")
+        fun creat(url: String): Retrofit {
             val level: HttpLoggingInterceptor.Level = HttpLoggingInterceptor.Level.BODY
             //新建log拦截器
-            val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-                message -> loge("RetrofitUtils", "OkHttp: " + message)
+            val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message ->
+                loge("RetrofitUtils", "OkHttp: " + message)
             })
             loggingInterceptor.level = level
+
             var httpBuild = OkHttpClient().newBuilder()
             httpBuild.connectTimeout(60, TimeUnit.SECONDS)
-            httpBuild.readTimeout(10,TimeUnit.SECONDS)
+            httpBuild.readTimeout(10, TimeUnit.SECONDS)
+            // 添加拦截器
             httpBuild.addInterceptor(loggingInterceptor)
             return Retrofit.Builder()
                     .baseUrl(url)
@@ -31,11 +34,13 @@ class RetrofitUtils{
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
-            }
-        fun<T> getService(url:String,service:Class<T>):T{
+        }
+
+        //获取ServiceApi
+        fun <T> getService(url: String, service: Class<T>): T {
             return RetrofitUtils.creat(url).create(service)
         }
 
-        var retrofitService : RetrofitService = RetrofitUtils.getService(Constant.BASEURL,RetrofitService::class.java)
-        }
+        var retrofitService: RetrofitService = RetrofitUtils.getService(Constant.BASEURL, RetrofitService::class.java)
+    }
 }

@@ -15,16 +15,19 @@ import java.util.*
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity(),MainView {
+
     private var recyclerAdapter:RecyclerAdapter ?= null
+    private var mainPresent: MainPresent? = null
     override fun setAdapter(jokeBean: JokeBean) {
+        // 初始化Adapter
         recyclerAdapter = RecyclerAdapter(this,jokeBean.result.data)
         recycler.adapter = recyclerAdapter
     }
-    var mainPresent: MainPresent? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mainPresent = MainPresentImpl(this)
+        // 用GridLayoutManager 来控制每行显示不同的个数
         val gridLayoutManager:GridLayoutManager = GridLayoutManager(this,6)
         if(gridLayoutManager!=null){
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
